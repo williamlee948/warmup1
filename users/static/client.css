@@ -1,0 +1,25 @@
+.box
+{
+    width: 300px;
+    height: 200px;
+    border: thin black solid;
+    background-color: rgb(243,243,243);
+    margin: 0 auto;
+}
+
+.message
+{
+    text-align: center;
+    margin: 10px 20px 10px 20px;
+    border: thin black solid;
+}
+
+form
+{
+    text-align: center;
+}
+
+body
+{
+	font-family: 'Helvetica Neue Light', HelveticaNeue-Light, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}

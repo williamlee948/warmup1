@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}/client.css">
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}/client.js"></script>
+</head>
+
+<div id="login-page" class="box">
+<div id="login-message" class="message">
+</div>
+    <form>
+        Username: <input id="login-username" type="text" name="username">
+        <br>
+        Password: <input id="login-password" type="password" name="pwd">
+        <br>
+        <input id="login-button" type="submit" value="Login">
+        <input id="add-user-button" type="submit" value="Add User">
+    </form>
+</div>
+
+<div id="welcome-page" class="box">
+<div id="welcome-message" class="message">
+</div>
+    <form>
+        <input id="logout-button" type="submit" value="Logout">
+    </form>
+</div>
+
+<script type="text/javascript">
+$('#login-page').hide()
+$('#welcome-page').hide()
+$('#login-username').val("")
+$('#login-password').val("")
+$('#login-message').html("Please enter your credentials below.")
+
+$(document).ready(function()
+{
+    show_login_page("Please enter your credentials below.");
+});
+
+$('#login-button').click(function()
+{
+    username = $('#login-username').val()
+    password = $('#login-password').val()
+    makeJsonRequest("/users/login", { user: username, password: password }, function(data) { return handle_login_response(data, username); });
+    return false;
+});
+
+$('#add-user-button').click(function()
+{
+    username = $('#login-username').val()
+    password = $('#login-password').val()
+    makeJsonRequest("/users/add", { user: username, password: password }, function(data) { return handle_add_user_response(data, username); });
+    return false;
+});
+
+$('#logout-button').click(function()
+{
+    show_login_page("Please enter your credentials below.");
+    return false;
+});
+
+function show_login_page(message)
+{
+    $('#welcome-page').hide()
+    $('#login-username').val("")
+    $('#login-password').val("")
+    $('#login-message').html(message)
+    $('#login-page').show()
+}
+
+function show_welcome_page(user, count)
+{
+    $('#login-page').hide();
+    $('#welcome-page').show();
+    $('#welcome-message').html("Welcome " + user + ".<br>You have logged in " + count + " times.");
+}
+
+function handle_login_response(data, user)
+{
+    if( data.errCode == 1 )
+    {
+        show_welcome_page(user, data.count);
+    }
+    else
+    {
+        show_login_page( getErrorMessage(data.errCode) );  
+    }
+}
+
+function handle_add_user_response(data, user)
+{
+    if( data.errCode == 1 )
+    {
+        show_welcome_page(user, data.count);
+    }
+    else
+    {
+        show_login_page(getErrorMessage(data.errCode));  
+    }
+}
+</script>
+
+<body>
+</body>
+
+</html>
