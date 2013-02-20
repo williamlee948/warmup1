@@ -68,7 +68,7 @@ def TESTAPI_resetFixture(request):
 @csrf_exempt
 def TESTAPI_unitTests(request):
     buffer = StringIO.StringIO()
-    suite = unittest.TestLoader().loadTestsFromTestCase(tests.TestUsers)
+    suite = unittest.TestLoader().loadTestsFromTestCase(tests.Tests)
     result = unittest.TextTestRunner(stream = buffer, verbosity = 2).run(suite)
 
     results = {"totalTests": result.testsRun, "nrFailed": len(result.failures), "output": buffer.getvalue()}
